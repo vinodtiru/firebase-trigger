@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
+import moment = require("moment");
 
 let firebase: admin.app.App;
 
@@ -56,7 +57,7 @@ const processAction = () => {
 
     const value3 = {
       name: "vinod",
-      age:3
+      age: moment(new Date()).valueOf().toString()
     };
 
     updateFirestoreDatabase(path, "doc", value3);
