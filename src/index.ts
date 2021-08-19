@@ -7,7 +7,7 @@ import { DocFile, DocFileSystem, DocFolder } from "./interface/interface";
 import {
   // getLastUpdatedTime,
   // isFileUpdate,
-  // readAllMDFile,
+  readAllMDFile,
   // setLastUpdatedTime,
   updateFolderPath,
 } from "./utils/file-util";
@@ -73,6 +73,17 @@ const processAction = () => {
     updateFirestoreDatabase(projName + "-docs", "time", {"lastupdated":moment(new Date()).valueOf().toString()})
     // setLastUpdatedTimeToDB();
     core.info(`Time written to DB`);
+
+
+    //
+    let docs = readAllMDFile("./", 0);
+    core.info(`Read MD Files completed`);
+    for (let index = 0; index < docs.length; index++) {
+      const doc = docs[index];
+      core.info(`Time written to DB === ${doc.filename}` );
+      updateFirestoreDatabase(projName + "-docs", doc.filename.replace(".md", ""), doc);
+      core.info(`Updated === ${doc.filename}` );
+    }
 
   } catch (error) {
     core.setFailed(JSON.stringify(error));
