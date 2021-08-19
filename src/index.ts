@@ -70,7 +70,7 @@ const processAction = () => {
     updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
 
-    updateFirestoreDatabase(projName + "-docs", "path", {"lastupdated":moment(new Date()).valueOf().toString()})
+    updateFirestoreDatabase(projName + "-docs", "time", {"lastupdated":moment(new Date()).valueOf().toString()})
     // setLastUpdatedTimeToDB();
     core.info(`Time written to DB`);
 
