@@ -57,6 +57,7 @@ function updateFolderPath(
     core.info(`inside foreach ${file}`);
   
     if (file.indexOf(".") < 0) {
+      core.info(`this is not a md file`);
       (folder as DocFolder).items.push(
         updateFolderPath(dir + "/" + file, new DocFolder(file, "folder"))
       );
@@ -66,6 +67,7 @@ function updateFolderPath(
       (folder as DocFolder).items.push(d);
     }
   });
+  core.info(`Finally return`);
   return folder;
 }
 
