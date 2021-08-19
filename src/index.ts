@@ -26,7 +26,7 @@ const initFirebase = () => {
   }
 };
 //Record<string, any>
-const updateFirestoreDatabase = (path: string, document: string, value: any) => {
+const updateFirestoreDatabase = (path: string, document: string, value: Record<string, any>) => {
   core.info(`Updating4 Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
   firebase
     .firestore()
@@ -83,7 +83,7 @@ const processAction = () => {
       core.info(`file label is ${file.label}`);
     });
     const value2 = {
-      name: fs.readFileSync("README.md", "utf8"),
+      name: new DocFileSystem("vinod", "icon"),
       age: 3,
     };
 
@@ -91,7 +91,7 @@ const processAction = () => {
 
     // write path to Firestore
     // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
-    updateFirestoreDatabase(projName + "-docs", "path", fol);
+    updateFirestoreDatabase(projName + "-docs", "path", value2);
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
