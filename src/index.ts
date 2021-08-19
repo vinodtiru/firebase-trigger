@@ -38,6 +38,7 @@ const updateFirestoreDatabase = (path: string, document: string, value: Record<s
         process.exit(core.ExitCode.Success);
       },
       (reason) => {
+        core.info(JSON.stringify(reason));
         core.setFailed(JSON.stringify(reason));
         process.exit(core.ExitCode.Failure);
       }
@@ -86,7 +87,7 @@ const processAction = () => {
       age: 3,
     };
 
-    const fol = new DocFileSystem("vinod","icon");
+    const fol = new DocFileSystem("vinod", "icon");
 
     // write path to Firestore
     // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
@@ -94,7 +95,7 @@ const processAction = () => {
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
-    
+
     const value3 = {
       name: "vinod-123",
       age: moment(new Date()).valueOf().toString(),
