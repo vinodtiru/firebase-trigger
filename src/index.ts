@@ -83,7 +83,7 @@ const processAction = () => {
       core.info(`file label is ${file.label}`);
     });
     const value2 = {
-      name: new DocFileSystem("vinod", "icon"),
+      name: { name: "vinod", icon: "icon"},
       age: 3,
     };
 
