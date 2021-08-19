@@ -77,6 +77,10 @@ const processAction = () => {
 
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
     core.info(`Completed Folder read`);
+
+    (folder as DocFolder).items.forEach((file) => {
+      core.info(`file label is ${file.label}`);
+    });
     // write path to Firestore
     updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
