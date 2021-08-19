@@ -90,7 +90,7 @@ const processAction = () => {
 
     // write path to Firestore
     // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
-    updateFirestoreDatabase(projName + "-docs", "path", new DocFolder("docs", "folder"));
+    updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
