@@ -27,6 +27,8 @@ function readMDFile(docs: Array<Doc>, dir: string, time: number) {
 
   for (let index = 0; index < files.length; index++) {
     const file = files[index];
+    core.info(`Time 1 ${file} - ${fs.statSync(dir + "/" + file).mtimeMs} - ${fs.statSync(dir + "/" + file).ctimeMs}`);
+    
     if (file.indexOf(".") < 0) {
       readMDFile(docs, dir + "/" + file, time);
     } else if (
