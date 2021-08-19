@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
 import moment = require("moment");
-import { DocFolder } from "./interface/interface";
+import { DocFileSystem, DocFolder } from "./interface/interface";
 
 let firebase: admin.app.App;
 
@@ -42,6 +42,31 @@ const updateFirestoreDatabase = (path: string, document: string, value: Record<s
       }
     );
 };
+
+function updateFolderPath(
+  dir: string,
+  folder: DocFileSystem
+): DocFileSystem {
+  core.info(`update Folder is Called`);
+  
+  // let files = fs.readdirSync(path.resolve(dir));
+  // core.info(`Files Read for ${path}`);
+  
+  // files.forEach(async (file) => {
+  //   core.info(`inside foreach ${file}`);
+  
+  //   if (file.indexOf(".") < 0) {
+  //     (folder as DocFolder).items.push(
+  //       updateFolderPath(dir + "/" + file, new DocFolder(file, "folder"))
+  //     );
+  //   } else if (file.endsWith(".md")) {
+  //     core.info(`this is a md file ${file}`);
+  //     let d = new DocFile(file.replace(".md",""), "description");
+  //     (folder as DocFolder).items.push(d);
+  //   }
+  // });
+  return folder;
+}
 
 const processAction = () => {
   initFirebase();
@@ -85,13 +110,13 @@ processAction();
 //////
 
 // import { DocFolder } from "./interface/interface";
-import {
-  // getLastUpdatedTime,
-  // isFileUpdate,
-  // readAllMDFile,
-  // setLastUpdatedTime,
-  updateFolderPath,
-} from "./utils/file-util";
+// import {
+//   // getLastUpdatedTime,
+//   // isFileUpdate,
+//   // readAllMDFile,
+//   // setLastUpdatedTime,
+//   updateFolderPath,
+// } from "./utils/file-util";
 
 // let folderPath = "./"; // proj.getDocPath();
 // let time = getLastUpdatedTime();
