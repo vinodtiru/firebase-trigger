@@ -81,16 +81,18 @@ const processAction = () => {
     (folder as DocFolder).items.forEach((file) => {
       core.info(`file label is ${file.label}`);
     });
-    // write path to Firestore
-    updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
-    core.info(`Data written to DB`);
-
-    // setLastUpdatedTimeToDB();
     const value2 = {
       name: fs.readFileSync("README.md", "utf8"),
       age: 3,
     };
 
+    // write path to Firestore
+    // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
+    updateFirestoreDatabase(projName + "-docs", "path", value2);
+    core.info(`Data written to DB`);
+
+    // setLastUpdatedTimeToDB();
+    
     const value3 = {
       name: "vinod-123",
       age: moment(new Date()).valueOf().toString(),
