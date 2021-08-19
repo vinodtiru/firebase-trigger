@@ -44,26 +44,21 @@ const updateFirestoreDatabase = (path: string, document: string, value: Record<s
     );
 };
 
-function updateFolderPath(
-  dir: string,
-  folder: DocFileSystem
-): DocFileSystem {
+function updateFolderPath(dir: string, folder: DocFileSystem): DocFileSystem {
   core.info(`update Folder is Called`);
-  
+
   let files = fs.readdirSync(path.resolve(dir));
   core.info(`Files Read for ${path}`);
-  
+
   files.forEach(async (file) => {
     core.info(`inside foreach ${file}`);
-  
+
     if (file.indexOf(".") < 0) {
       core.info(`this is not a md file`);
-      (folder as DocFolder).items.push(
-        updateFolderPath(dir + "/" + file, new DocFolder(file, "folder"))
-      );
+      (folder as DocFolder).items.push(updateFolderPath(dir + "/" + file, new DocFolder(file, "folder")));
     } else if (file.endsWith(".md")) {
       core.info(`this is a md file ${file}`);
-      let d = new DocFile(file.replace(".md",""), "description");
+      let d = new DocFile(file.replace(".md", ""), "description");
       (folder as DocFolder).items.push(d);
     }
   });
@@ -75,25 +70,26 @@ const processAction = () => {
   initFirebase();
 
   try {
-
     const path: string = core.getInput("path", isRequired);
     const projName = core.getInput("projName", isRequired);
-    
+
     core.info(`Start of new code`);
-  
+
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
+    core.info(`Completed Folder read`);
     // write path to Firestore
     updateFirestoreDatabase(projName + "-docs", "path", folder);
+    core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
     const value2 = {
       name: fs.readFileSync("README.md", "utf8"),
-      age:3
+      age: 3,
     };
 
     const value3 = {
       name: "vinod-123",
-      age: moment(new Date()).valueOf().toString()
+      age: moment(new Date()).valueOf().toString(),
     };
 
     updateFirestoreDatabase(path, "doc2", value2);
