@@ -60,7 +60,7 @@ const processAction = () => {
       age: moment(new Date()).valueOf().toString()
     };
 
-    updateFirestoreDatabase(path, "doc2", value3);
+    updateFirestoreDatabase(path, "doc2", value2);
   } catch (error) {
     core.setFailed(JSON.stringify(error));
     process.exit(core.ExitCode.Failure);
