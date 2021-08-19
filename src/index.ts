@@ -4,6 +4,13 @@ import * as fs from "fs";
 import * as path from "path";
 import moment = require("moment");
 import { DocFile, DocFileSystem, DocFolder } from "./interface/interface";
+import {
+  // getLastUpdatedTime,
+  // isFileUpdate,
+  // readAllMDFile,
+  // setLastUpdatedTime,
+  updateFolderPath,
+} from "./utils/file-util";
 
 let firebase: admin.app.App;
 
@@ -25,9 +32,10 @@ const initFirebase = () => {
     process.exit(core.ExitCode.Failure);
   }
 };
+
 //Record<string, any>
 const updateFirestoreDatabase = (path: string, document: string, value: any) => {
-  core.info(`Updating4 Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
+  core.info(`Updating Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
   firebase
     .firestore()
     .collection(path)
@@ -45,27 +53,27 @@ const updateFirestoreDatabase = (path: string, document: string, value: any) => 
     );
 };
 
-function updateFolderPath(dir: string, folder: DocFileSystem): DocFileSystem {
-  core.info(`update Folder is Called`);
+// function updateFolderPath(dir: string, folder: DocFileSystem): DocFileSystem {
+//   core.info(`update Folder is Called`);
 
-  let files = fs.readdirSync(path.resolve(dir));
-  core.info(`Files Read for ${path}`);
+//   let files = fs.readdirSync(path.resolve(dir));
+//   core.info(`Files Read for ${path}`);
 
-  files.forEach(async (file) => {
-    core.info(`inside foreach ${file}`);
+//   files.forEach(async (file) => {
+//     core.info(`inside foreach ${file}`);
 
-    if (file.indexOf(".") < 0) {
-      core.info(`this is not a md file`);
-      (folder as DocFolder).items.push(updateFolderPath(dir + "/" + file, new DocFolder(file, "folder")));
-    } else if (file.endsWith(".md")) {
-      core.info(`this is a md file ${file}`);
-      let d = new DocFile(file.replace(".md", ""), "description");
-      (folder as DocFolder).items.push(d);
-    }
-  });
-  core.info(`Finally return`);
-  return folder;
-}
+//     if (file.indexOf(".") < 0) {
+//       core.info(`this is not a md file`);
+//       (folder as DocFolder).items.push(updateFolderPath(dir + "/" + file, new DocFolder(file, "folder")));
+//     } else if (file.endsWith(".md")) {
+//       core.info(`this is a md file ${file}`);
+//       let d = new DocFile(file.replace(".md", ""), "description");
+//       (folder as DocFolder).items.push(d);
+//     }
+//   });
+//   core.info(`Finally return`);
+//   return folder;
+// }
 
 const processAction = () => {
   initFirebase();
@@ -78,29 +86,12 @@ const processAction = () => {
 
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
     core.info(`Completed Folder read`);
-
-    (folder as DocFolder).items.forEach((file) => {
-      core.info(`file label is ${file.label}`);
-    });
-    const value2 = {
-      name: new DocFileSystem("vinod", "icon")
-    };
-
-    const fol = new DocFileSystem("vinod", "icon");
-
     // write path to Firestore
-    // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
     updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
 
-    const value3 = {
-      name: "vinod-123",
-      age: moment(new Date()).valueOf().toString(),
-    };
-
-    updateFirestoreDatabase(path, "doc2", value2);
   } catch (error) {
     core.setFailed(JSON.stringify(error));
     process.exit(core.ExitCode.Failure);
