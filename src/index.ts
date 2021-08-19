@@ -26,13 +26,13 @@ const initFirebase = () => {
   }
 };
 //Record<string, any>
-const updateFirestoreDatabase = (path: string, document: string, value: Record<string, DocFileSystem>) => {
+const updateFirestoreDatabase = (path: string, document: string, value: any) => {
   core.info(`Updating4 Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
   firebase
     .firestore()
     .collection(path)
     .doc(document)
-    .set(value)
+    .set(JSON.parse(JSON.stringify(value)))
     .then(
       () => {
         process.exit(core.ExitCode.Success);
@@ -90,7 +90,7 @@ const processAction = () => {
 
     // write path to Firestore
     // updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
-    updateFirestoreDatabase(projName + "-docs", "path", value2);
+    updateFirestoreDatabase(projName + "-docs", "path", new DocFolder("docs", "folder"));
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
