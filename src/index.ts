@@ -53,27 +53,7 @@ const updateFirestoreDatabase = (path: string, document: string, value: any) => 
     );
 };
 
-// function updateFolderPath(dir: string, folder: DocFileSystem): DocFileSystem {
-//   core.info(`update Folder is Called`);
 
-//   let files = fs.readdirSync(path.resolve(dir));
-//   core.info(`Files Read for ${path}`);
-
-//   files.forEach(async (file) => {
-//     core.info(`inside foreach ${file}`);
-
-//     if (file.indexOf(".") < 0) {
-//       core.info(`this is not a md file`);
-//       (folder as DocFolder).items.push(updateFolderPath(dir + "/" + file, new DocFolder(file, "folder")));
-//     } else if (file.endsWith(".md")) {
-//       core.info(`this is a md file ${file}`);
-//       let d = new DocFile(file.replace(".md", ""), "description");
-//       (folder as DocFolder).items.push(d);
-//     }
-//   });
-//   core.info(`Finally return`);
-//   return folder;
-// }
 
 const processAction = () => {
   initFirebase();
@@ -90,7 +70,9 @@ const processAction = () => {
     updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
 
+    updateFirestoreDatabase(projName + "-docs", "path", {"lastupdated":moment(new Date()).valueOf().toString()})
     // setLastUpdatedTimeToDB();
+    core.info(`Time written to DB`);
 
   } catch (error) {
     core.setFailed(JSON.stringify(error));
