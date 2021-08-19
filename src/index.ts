@@ -82,7 +82,7 @@ const processAction = () => {
       core.info(`file label is ${file.label}`);
     });
     // write path to Firestore
-    updateFirestoreDatabase(projName + "-docs", "path", folder);
+    updateFirestoreDatabase(projName + "-docs", "path", new DocFileSystem("vinod","icon"));
     core.info(`Data written to DB`);
 
     // setLastUpdatedTimeToDB();
