@@ -26,7 +26,7 @@ const initFirebase = () => {
   }
 };
 //Record<string, any>
-const updateFirestoreDatabase = (path: string, document: string, value: Record<string, any>) => {
+const updateFirestoreDatabase = (path: string, document: string, value: Record<string, DocFileSystem>) => {
   core.info(`Updating4 Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
   firebase
     .firestore()
@@ -83,8 +83,7 @@ const processAction = () => {
       core.info(`file label is ${file.label}`);
     });
     const value2 = {
-      name: { name: "vinod", icon: "icon"},
-      age: 3,
+      name: new DocFileSystem("vinod", "icon")
     };
 
     const fol = new DocFileSystem("vinod", "icon");
