@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
 import moment = require("moment");
+import { DocFolder } from "./interface/interface";
 
 let firebase: admin.app.App;
 
@@ -25,7 +26,7 @@ const initFirebase = () => {
 };
 
 const updateFirestoreDatabase = (path: string, document: string, value: Record<string, any>) => {
-  core.info(`Updating4 Firestore Database at collection: ${path} document: ${document}`);
+  core.info(`Updating4 Firestore Database at collection: ${path} document: ${document} and value: ${value}`);
   firebase
     .firestore()
     .collection(path)
@@ -47,9 +48,14 @@ const processAction = () => {
 
   try {
 
-    // setLastUpdatedTimeToDB();
     const path: string = core.getInput("path", isRequired);
     const projName = core.getInput("projName", isRequired);
+    
+    let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
+    // write path to Firestore
+    updateFirestoreDatabase(projName + "-docs", "path", folder);
+
+    // setLastUpdatedTimeToDB();
     const value2 = {
       name: fs.readFileSync("README.md", "utf8"),
       age:3
@@ -77,13 +83,13 @@ processAction();
 //////
 
 // import { DocFolder } from "./interface/interface";
-// import {
-//   getLastUpdatedTime,
-//   isFileUpdate,
-//   readAllMDFile,
-//   setLastUpdatedTime,
-//   updateFolderPath,
-// } from "./utils/file-util";
+import {
+  // getLastUpdatedTime,
+  // isFileUpdate,
+  // readAllMDFile,
+  // setLastUpdatedTime,
+  updateFolderPath,
+} from "./utils/file-util";
 
 // let folderPath = "./"; // proj.getDocPath();
 // let time = getLastUpdatedTime();
