@@ -51,6 +51,8 @@ const processAction = () => {
     const path: string = core.getInput("path", isRequired);
     const projName = core.getInput("projName", isRequired);
     
+    core.info(`Start of new code`);
+  
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
     // write path to Firestore
     updateFirestoreDatabase(projName + "-docs", "path", folder);
