@@ -1,14 +1,9 @@
 import * as core from "@actions/core";
 import * as admin from "firebase-admin";
-import * as fs from "fs";
-import * as path from "path";
 import moment = require("moment");
 import { DocFile, DocFileSystem, DocFolder } from "./interface/interface";
 import {
-  // getLastUpdatedTime,
-  // isFileUpdate,
   readAllMDFile,
-  // setLastUpdatedTime,
   updateFolderPath,
 } from "./utils/file-util";
 
@@ -59,7 +54,6 @@ const processAction = () => {
   initFirebase();
 
   try {
-    const path: string = core.getInput("path", isRequired);
     const projName = core.getInput("projName", isRequired);
 
     core.info(`Start of new code`);
@@ -70,12 +64,6 @@ const processAction = () => {
     updateFirestoreDatabase(projName + "-docs", "path", folder);
     core.info(`Data written to DB`);
 
-    updateFirestoreDatabase(projName + "-docs", "time", {"lastupdated":moment(new Date()).valueOf().toString()})
-    // setLastUpdatedTimeToDB();
-    core.info(`Time written to DB`);
-
-
-    //
     let docs = readAllMDFile("./", 0);
     core.info(`Read MD Files completed`);
     for (let index = 0; index < docs.length; index++) {
@@ -91,44 +79,5 @@ const processAction = () => {
   }
 };
 
-// function setLastUpdatedTimeToDB() {
-//   // write current time in ms
-//   updateFirestoreDatabase("lastTimeStamp","last", moment(new Date()).valueOf().toString());
-// }
-
 processAction();
 
-//////
-
-// import { DocFolder } from "./interface/interface";
-// import {
-//   // getLastUpdatedTime,
-//   // isFileUpdate,
-//   // readAllMDFile,
-//   // setLastUpdatedTime,
-//   updateFolderPath,
-// } from "./utils/file-util";
-
-// let folderPath = "./"; // proj.getDocPath();
-// let time = getLastUpdatedTime();
-
-// // const data = { name: "vinod kkk ta -latest" };
-// // db.collection("doc2").doc("path123").set(data);
-
-// if (isFileUpdate(folderPath, time, false)) {
-//   // let folder = updateFolderPath(folderPath, new DocFolder("docs", "folder"));
-//   // // write path to Firestore
-//   // db.collection(projName + "-docs")
-//   //   .doc("path")
-//   //   .set(JSON.parse(JSON.stringify(folder)));
-//   // let docs = readAllMDFile(folderPath, time);
-//   // for (let index = 0; index < docs.length; index++) {
-//   //   const doc = docs[index];
-//   //   // write each doc to Firestore
-//   //   db.collection(projName + "-docs")
-//   //     .doc(doc.filename.replace(".md", ""))
-//   //     .set(JSON.parse(JSON.stringify(doc)));
-//   // }
-// }
-
-// setLastUpdatedTime();
