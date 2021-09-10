@@ -56,7 +56,7 @@ const processAction = () => {
   try {
     const projName = core.getInput("projName", isRequired);
 
-    core.info(`Start of new code`);
+    core.info(`Start of new code - 111`);
 
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
     core.info(`Completed Folder read`);
