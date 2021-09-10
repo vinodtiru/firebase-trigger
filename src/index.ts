@@ -15,12 +15,11 @@ const isRequired = {
 
 const initFirebase = () => {
   try {
-    core.info("Initialized Firebase Admin Connection");
+    core.info("Initialized Firebase Admin Connection - New");
     const credentials = core.getInput("credentials", isRequired);
 
     firebase = admin.initializeApp({
-      credential: admin.credential.cert(JSON.parse(credentials) as admin.ServiceAccount),
-      databaseURL: core.getInput("databaseUrl"),
+      credential: admin.credential.cert(JSON.parse(credentials) as admin.ServiceAccount)
     });
   } catch (error) {
     core.setFailed(JSON.stringify(error));
@@ -56,19 +55,16 @@ const processAction = () => {
   try {
     const projName = core.getInput("projName", isRequired);
 
-    core.info(`Start of new code - 111`);
-
     let folder = updateFolderPath("./", new DocFolder("docs", "folder"));
     core.info(`Completed Folder read`);
     // write path to Firestore
     updateFirestoreDatabase(projName + "-docs", "path", folder);
-    core.info(`Data written to DB`);
+    core.info(`Path written to DB`);
 
     let docs = readAllMDFile("./", 0);
     core.info(`Read MD Files completed`);
     for (let index = 0; index < docs.length; index++) {
       const doc = docs[index];
-      core.info(`Time written to DB === ${doc.filename}` );
       updateFirestoreDatabase(projName + "-docs", doc.filename.replace(".md", ""), doc);
       core.info(`Updated === ${doc.filename}` );
     }
