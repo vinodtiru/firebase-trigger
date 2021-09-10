@@ -50,7 +50,7 @@ export function updateFolderPath(
   folder: DocFileSystem
 ): DocFileSystem {
   core.info(`update Folder is Called`);
-  
+  dir = dir + '/docs'
   let files = fs.readdirSync(path.resolve(dir));
   core.info(`Files Read for ${path}`);
   
